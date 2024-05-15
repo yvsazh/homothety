@@ -118,5 +118,5 @@ function mouseWheel(event) {
         k -= 0.1;
     }
     
-    $("#k").text(`k = ${Math.floor(k)}`);
+    $("#k").text(`Коєфіцієнт гомотетії = 2 = ${Math.floor(k)}`);
 }
