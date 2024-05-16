@@ -1,9 +1,20 @@
 var k = 2;
 
+const addK = () => {
+    k += 1;
+    $("#k").text(`Коєфіцієнт гомотетії = ${k}`)
+}
+
+const subK = () => {
+    k -= 1;
+    $("#k").text(`Коєфіцієнт гомотетії = ${k}`)
+
+}
+
 const calculateHomothety = () => {
     homothetyDots = [];
     for (var dot = 0; dot < dots.length; dot++) {
-        var vel = p5.Vector.sub(homothetyDot, dots[dot]).mult(-1*k);
+        var vel = p5.Vector.sub(dots[dot], homothetyDot).mult(k);
         homothetyDots.push(p5.Vector.add(homothetyDot, vel));
     }
 };
@@ -81,17 +92,20 @@ function draw() {
 
 }
 
-function mouseClicked(){
-    if (createFigure){
-        dots.push(createVector(mouseX, mouseY));
+function mouseClicked(event){
+    if (event.target == $("#defaultCanvas0")[0]) {
+        if (createFigure){
+            dots.push(createVector(mouseX, mouseY));
+        }
+    
+        if (createHomothetyDot) {
+            homothetyDot.set(mouseX, mouseY);
+            calculateHomothety();
+            canDrawHomothety = true;
+            createHomothetyDot = false;
+        }
     }
 
-    if (createHomothetyDot) {
-        homothetyDot.set(mouseX, mouseY);
-        calculateHomothety();
-        canDrawHomothety = true;
-        createHomothetyDot = false;
-    }
 }
 
 function keyPressed() {
@@ -100,7 +114,6 @@ function keyPressed() {
         createFigure = false;
         createHomothetyDot = true;
     }
-    console.log(keyCode)
     if(keyCode == 8) { // DELETE BUTTON
         dots = [];
         homothetyDots = [];
@@ -109,14 +122,4 @@ function keyPressed() {
         createFigure = true;
         createHomothetyDot = false;   
     }
-}
-
-function mouseWheel(event) {
-    if (event.delta > 0) {
-        k += 0.1;
-    } else {
-        k -= 0.1;
-    }
-    
-    $("#k").text(`Коєфіцієнт гомотетії = 2 = ${Math.floor(k)}`);
 }
